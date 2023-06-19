@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <cstdint>
+#include <algorithm>
+#include <cmath>
 
 #include "./state.hpp"
 #include "../config.hpp"
@@ -13,7 +15,41 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  return 0;
+  int totalVal = 0;
+  for(int i=0; i<BOARD_H; i+=1){
+    for(int j=0; j<BOARD_W; j+=1){
+      totalVal += getPieceVal(this->player, i, j);
+      totalVal -= getPieceVal(1-this->player, i, j);
+    }
+  }
+  return totalVal;
+}
+
+// 0=empty, 1=pawn, 2=rook, 3=knight, 4=bishop, 5=queen, 6=king
+int State::getPieceVal(int player, int y, int x){
+  int pieceVal = 0;
+    switch(this->board.board[player][y][x]){
+      case 1 :
+        pieceVal = 10;
+        break;
+      case 2 :
+        pieceVal = 50;
+        break;
+      case 3 :
+        pieceVal = 30;
+        break;
+      case 4 :
+        pieceVal = 30;
+        break;
+      case 5 :
+        pieceVal = 90;
+        break;
+      case 6 :
+        pieceVal = 900;
+        break;
+    }
+
+    return pieceVal;
 }
 
 
@@ -67,7 +103,6 @@ static const int move_table_king[8][2] = {
   {1, 0}, {0, 1}, {-1, 0}, {0, -1}, 
   {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
 };
-
 
 /**
  * @brief get all legal actions of now state
