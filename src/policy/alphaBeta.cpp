@@ -22,27 +22,27 @@ int AlphaBeta::miniMax(State *state, int depth, int alpha, int beta, bool isMaxP
     auto actions = state->legal_actions;
 
     if (isMaxPlayer) {
-        int bestMove = -9999;
+        int maxEval = -9999;
         for (auto it = actions.begin(); it != actions.end(); it++) {
             State *new_state = state->next_state(*it);
-            bestMove = std::max(bestMove, miniMax(new_state, depth - 1, alpha, beta, !isMaxPlayer));
-            alpha = std::max(alpha, bestMove);
+            maxEval = std::max(maxEval, miniMax(new_state, depth - 1, alpha, beta, false));
+            alpha = std::max(alpha, maxEval);
             if (beta <= alpha) {
-                return bestMove;
+                return maxEval;
             }
         }
-        return bestMove;
+        return maxEval;
     } else {
-        int bestMove = 9999;
+        int minEval = 9999;
         for(auto it = actions.begin(); it != actions.end(); it++) {
             State *new_state = state->next_state(*it);
-            bestMove = std::min(bestMove, miniMax(new_state, depth - 1, alpha, beta, !isMaxPlayer));
-            beta = std::min(beta, bestMove);
+            minEval = std::min(minEval, miniMax(new_state, depth - 1, alpha, beta, true));
+            beta = std::min(beta, minEval);
             if (beta <= alpha) {
-                return bestMove;
+                return minEval;
             }
         }
-        return bestMove;
+        return minEval;
     }
 }
 

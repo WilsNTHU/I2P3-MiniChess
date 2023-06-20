@@ -22,19 +22,19 @@ int Minimax::miniMax(State *state, int depth, bool isMaxPlayer){
     auto actions = state->legal_actions;
 
     if (isMaxPlayer) {
-        int bestMove = -9999;
+        int maxEval = -9999;
         for (auto it = actions.begin(); it != actions.end(); it++) {
             State *new_state = state->next_state(*it);
-            bestMove = std::max(bestMove, miniMax(new_state, depth - 1, !isMaxPlayer));
+            maxEval = std::max(maxEval, miniMax(new_state, depth - 1, false));
         }
-        return bestMove;
+        return maxEval;
     } else {
-        int bestMove = 9999;
+        int minEval = 9999;
         for(auto it = actions.begin(); it != actions.end(); it++) {
             State *new_state = state->next_state(*it);
-            bestMove = std::min(bestMove, miniMax(new_state, depth - 1, !isMaxPlayer));
+            minEval = std::min(minEval, miniMax(new_state, depth - 1, true));
         }
-        return bestMove;
+        return minEval;
     }
 }
 
